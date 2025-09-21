@@ -100,6 +100,7 @@
           .then(idToken => {
             const email = idToken.email;
             document.getElementById('userId').textContent = `ユーザーID: ${email}`;
+            
           })
           .catch((err) => {
             console.error('プロフィール情報の取得に失敗しました', err);
