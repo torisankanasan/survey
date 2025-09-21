@@ -104,6 +104,7 @@
           })
           .catch((err) => {
             console.error('プロフィール情報の取得に失敗しました', err);
+            document.getElementById('userId').textContent = `${err}`;
           });
       }
 
