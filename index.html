@@ -5,33 +5,41 @@
     <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <style type="text/css">
-      html, body {
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      html,
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         margin: 0;
         padding: 0;
+        background-color: #f3e8ff; /* ページ全体の背景色 */
       }
       .home {
-        padding: 2rem 1rem;
+        padding: 0 1rem;
+        text-align: center;
+      }
+      .home__header {
+        background-color: #7c3aed; /* 濃い紫 */
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        padding: 1.5rem 0;
         text-align: center;
       }
       .home__title {
         font-size: 2.5rem;
         line-height: 1.15;
-        margin-bottom: 1rem;
+        color: #fff;
+        margin: 0;
+        background: none;
+        border-radius: 0;
+        padding: 0;
+        display: inline;
       }
       .user-id {
         font-size: 1rem;
         color: #555;
         margin-bottom: 1.5rem;
       }
-      .form-container {
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-      }
+
       .form-field {
         margin-bottom: 1rem;
       }
@@ -49,7 +57,7 @@
         border-radius: 5px;
       }
       .form-button {
-        background-color: #00B900;
+        background-color: #00b900;
         color: white;
         border: none;
         padding: 0.75rem;
@@ -71,10 +79,10 @@
           font-size: 2rem;
         }
       }
-        input {
-            font-size: 16px;
-            transform: scale(0.8);
-        }
+      input {
+        font-size: 16px;
+        transform: scale(0.8);
+      }
     </style>
     <title>Honde Next お客様アンケート</title>
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
@@ -82,60 +90,66 @@
       function initializeLiff(myLiffId) {
         liff
           .init({
-            liffId: myLiffId
+            liffId: myLiffId,
           })
           .then(() => {
             const idToken = liff.getDecodedIDToken();
-            document.getElementById('email').textContent = `${idToken.email}`;
+            if (idToken && idToken.email) {
+              document.getElementById("email").defaultValue = idToken.email;
+            }
           })
           .catch((err) => {
             // LIFF initialization failed
-            console.error('LIFF initialization failed', err);
+            console.error("LIFF initialization failed", err);
           });
       }
 
       function sendMessage() {
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const age = document.getElementById('age').value;
-        const gender = document.getElementById('gender').value;
-        const address = document.getElementById('address').value;
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const age = document.getElementById("age").value;
+        const gender = document.getElementById("gender").value;
+        const address = document.getElementById("address").value;
 
         const message = `登録情報:\n名前: ${name}\nメール: ${email}\n年齢: ${age}\n性別: ${gender}\n住所: ${address}`;
 
-        liff.sendMessages([
-          {
-            type: 'text',
-            text: message
-          }
-        ])
-        .then(() => {
-          alert('メッセージが送信されました');
-          liff.closeWindow();
-        })
-        .catch((err) => {
-          console.error('メッセージ送信エラー', err);
-          alert('メッセージの送信に失敗しました');
-        });
+        liff
+          .sendMessages([
+            {
+              type: "text",
+              text: message,
+            },
+          ])
+          .then(() => {
+            alert("メッセージが送信されました");
+            liff.closeWindow();
+          })
+          .catch((err) => {
+            console.error("メッセージ送信エラー", err);
+            alert("メッセージの送信に失敗しました");
+          });
       }
 
-      document.addEventListener('DOMContentLoaded', function () {
-        const myLiffId = '2006661249-zQ7Np5Km'; // ここにあなたのLIFF IDを入力してください
+      document.addEventListener("DOMContentLoaded", function () {
+        const myLiffId = "2006661249-zQ7Np5Km"; // ここにあなたのLIFF IDを入力してください
         initializeLiff(myLiffId);
 
-        document.querySelector('form').addEventListener('submit', function (event) {
-          event.preventDefault();
-          sendMessage();
-        });
+        document
+          .querySelector("form")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            sendMessage();
+          });
       });
     </script>
   </head>
   <body>
     <div class="home">
-      <h1 class="home__title">
-        お客様アンケート4
-      </h1>
+      <div class="home__header">
+      <h1 class="home__title">お客様アンケート4</h1>
+    </div>
+    <div class="home">
       <div id="userId" class="user-id">ユーザーIDを取得中...</div>
       <div class="form-container">
         <form>
