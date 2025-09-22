@@ -85,28 +85,16 @@
             liffId: myLiffId
           })
           .then(() => {
-            // LIFF initialization succeeded
-            console.log('LIFF initialized');
-            // getUserProfile();
             const idToken = liff.getDecodedIDToken();
-            document.getElementById('userId').textContent = `${idToken.email}`;
+            if (idToken.email) {
+              document.getElementById('email').textContent = `${idToken.email}`;
+            } else {
+              document.getElementById('userId').textContent = `メールアドレスがありません`;
+            }
           })
           .catch((err) => {
             // LIFF initialization failed
             console.error('LIFF initialization failed', err);
-          });
-      }
-
-      function getUserProfile() {
-        liff.getDecodedIDToken()
-          .then(idToken => {
-            const email = idToken.email;
-            document.getElementById('userId').textContent = `ユーザーID: ${email}`;
-            
-          })
-          .catch((err) => {
-            console.error('プロフィール情報の取得に失敗しました', err);
-            document.getElementById('userId').textContent = `${err}`;
           });
       }
 
@@ -150,7 +138,7 @@
   <body>
     <div class="home">
       <h1 class="home__title">
-        お客様アンケート3
+        お客様アンケート4
       </h1>
       <div id="userId" class="user-id">ユーザーIDを取得中...</div>
       <div class="form-container">
