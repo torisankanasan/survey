@@ -89,7 +89,7 @@
             console.log('LIFF initialized');
             // getUserProfile();
             const idToken = liff.getDecodedIDToken();
-            document.getElementById('userId').textContent = `${idToken}`;
+            document.getElementById('userId').textContent = `${idToken.email}`;
           })
           .catch((err) => {
             // LIFF initialization failed
@@ -150,7 +150,7 @@
   <body>
     <div class="home">
       <h1 class="home__title">
-        お客様アンケート2
+        お客様アンケート3
       </h1>
       <div id="userId" class="user-id">ユーザーIDを取得中...</div>
       <div class="form-container">
