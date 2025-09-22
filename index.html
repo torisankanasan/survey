@@ -123,21 +123,35 @@
         if (!window.confirm(confirmMsg)) {
           return; // キャンセルされた場合は送信しない
         }
-
-        liff
-          .sendMessages([
-            {
-              type: "text",
-              text: message,
-            },
-          ])
-          .then(() => {
-            alert("メッセージが送信されました");
-            liff.closeWindow();
+        const accessToken = liff.getAccessToken();
+        const postData= {
+          accessToken: accessToken,
+          name: name,
+          email: email,
+          inqueryType: inqueryType,
+          inquery: inquery
+        };
+        params = "?accessToken=" + encodeURIComponent(accessToken) + "&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email) + "&inqueryType=" + encodeURIComponent(inqueryType) + "&inquery=" + encodeURIComponent(inquery);
+        fetch("https://default99ea0543b51849ccaaefc9edd8db02.01.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c53df230535044f8871a4a0ef362c899/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=93-qkv4lTY7CIz03FusSgsp-ntmIlCOJm6vDLvacx2w"+params, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
           })
-          .catch((err) => {
-            console.error("メッセージ送信エラー", err);
-            alert("メッセージの送信に失敗しました");
+          .then((data) => {
+            alert("お問い合わせを送信しました。ありがとうございます！");
+            // フォームをリセット
+            document.querySelector("form").reset();
+          })
+          .catch((error) => {
+            console.error("There was a problem with the fetch operation:", error);
+            alert("送信中にエラーが発生しました。もう一度お試しください。");
           });
       }
 
