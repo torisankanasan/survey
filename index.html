@@ -18,14 +18,15 @@
         text-align: center;
       }
       .home__header {
-        background-color: #7c3aed; /* 濃い紫 */
+        background-color: #7c3aed;
         width: 100vw;
         margin-left: calc(-50vw + 50%);
-        padding: 1.5rem 0;
+        margin-bottom: 2rem;
+        padding: 1.5rem 0; /* 下の余白を広げる */
         text-align: center;
       }
       .home__title {
-        font-size: 2.5rem;
+        font-size: 2rem; /* 2.5rem → 2remに変更 */
         line-height: 1.15;
         color: #fff;
         margin: 0;
@@ -38,23 +39,6 @@
         font-size: 1rem;
         color: #555;
         margin-bottom: 1.5rem;
-      }
-
-      .form-field {
-        margin-bottom: 1rem;
-      }
-      .form-field label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-size: 1rem;
-      }
-      .form-field input,
-      .form-field select {
-        width: 100%;
-        padding: 0.5rem;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
       }
       .form-button {
         background-color: #00b900;
@@ -76,15 +60,35 @@
           font-size: 14px;
         }
         .home__title {
-          font-size: 2rem;
+          font-size: 1.5rem; /* スマホ時はさらに小さく */
         }
       }
       input {
         font-size: 16px;
-        transform: scale(0.8);
+      }
+      .form-field {
+        margin-bottom: 1rem;
+        text-align: left; /* 各設問項目を左寄せ */
+      }
+      .form-field label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        text-align: left; /* ラベルも左寄せ */
+      }
+      .form-button,
+      #name,
+      #email,
+      #inquery {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 0.5rem;
       }
     </style>
-    <title>Honde Next お客様アンケート</title>
+    <title>Honde Nextへのお問い合わせ</title>
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
     <script>
       function initializeLiff(myLiffId) {
@@ -107,12 +111,18 @@
       function sendMessage() {
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const age = document.getElementById("age").value;
-        const gender = document.getElementById("gender").value;
-        const address = document.getElementById("address").value;
+        const inqueryType = document.querySelectorAll('input[name="type"]:checked')[0]
+          ? document.querySelectorAll('input[name="type"]:checked')[0].value
+          : "";
+        const inquery = document.getElementById("inquery").value;
 
-        const message = `登録情報:\n名前: ${name}\nメール: ${email}\n年齢: ${age}\n性別: ${gender}\n住所: ${address}`;
+        const message = `◆登録情報\nお問い合わせ種別: ${inqueryType}\n氏名: ${name}\nメールアドレス: ${email}\nお問い合わせの内容: ${inquery}`;
+
+        // 入力内容を確認
+        const confirmMsg = `以下の内容で送信します。\n\n${message}\n\nよろしいですか？`;
+        if (!window.confirm(confirmMsg)) {
+          return; // キャンセルされた場合は送信しない
+        }
 
         liff
           .sendMessages([
@@ -147,40 +157,46 @@
   <body>
     <div class="home">
       <div class="home__header">
-      <h1 class="home__title">お客様アンケート4</h1>
+      <h1 class="home__title">Honde Nextへのお問い合わせ</h1>
     </div>
-    <div class="home">
-      <div id="userId" class="user-id">ユーザーIDを取得中...</div>
-      <div class="form-container">
+      <div>
         <form>
-          <div class="form-field">
-            <label for="name">名前</label>
-            <input type="text" id="name" name="name" required />
-          </div>
-          <div class="form-field">
-            <label for="email">メールアドレス</label>
-            <input type="email" id="email" name="email" required />
-          </div>
-          <div class="form-field">
-            <label for="age">年齢</label>
-            <input type="number" id="age" name="age" min="0" required />
-          </div>
-          <div class="form-field">
-            <label for="gender">性別</label>
-            <select id="gender" name="gender" required>
-              <option value="">選択してください</option>
-              <option value="male">男性</option>
-              <option value="female">女性</option>
-              <option value="other">その他</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label for="inquery">問い合わせ</label>
-            <input type="text" id="inquery" name="inquery" />
-          </div>
-          <button type="submit" class="form-button">確認する</button>
-        </form>
-      </div>
+            <div class="form-field">
+              <label>お問い合わせ種別 <span style="color:red;">※必須</span></label>
+              <div style="text-align:left;">
+                <label style="display:flex; align-items:center; gap:0.5em; justify-content: flex-start;">
+                  <input type="radio" name="type" value="ソリューション・サービスに関するご相談" required />
+                  <span>ソリューション・サービスに関するご相談</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5em; justify-content: flex-start;">
+                  <input type="radio" name="type" value="貴社製品・サービスのご提案" required />
+                  <span>貴社製品・サービスのご提案</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5em; justify-content: flex-start;">
+                  <input type="radio" name="type" value="その他お問合せ（取材、講演もこちら）" required />
+                  <span>その他お問合せ（取材、講演もこちら）</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="name">氏名 <span style="color:red;">※必須</span></label>
+              <input type="text" id="name" name="name" required style="width:100%; font-size:1rem; border-radius:5px; border:1px solid #ccc; padding:0.5rem;" />
+            </div>
+            <div class="form-field">
+              <label for="email">メールアドレス <span style="color:red;">※必須</span></label>
+              <input type="email" id="email" name="email" required style="width:100%; font-size:1rem; border-radius:5px; border:1px solid #ccc; padding:0.5rem;" />
+            </div>
+            <div class="form-field">
+              <label for="inquery">お問い合わせの内容</label>
+              <textarea id="inquery" name="inquery" rows="5" style="width:100%; font-size:1rem; border-radius:5px; border:1px solid #ccc; padding:0.5rem;"></textarea>
+            </div>
+            <button type="submit" class="form-button">確認する</button>
+            <div style="margin-top: 1rem;">
+              <a href="https://www.notion.so/hondenext/8d213c1783054a3bb33eed4bbc6caf9c" target="_blank" style="color: #7c3aed; text-decoration: underline;">
+                個人情報のお取り扱いについて
+              </a>
+            </div>
+          </form>
     </div>
   </body>
 </html>
