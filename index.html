@@ -86,11 +86,7 @@
           })
           .then(() => {
             const idToken = liff.getDecodedIDToken();
-            if (idToken.email != null) {
-              document.getElementById('email').textContent = `${idToken.email}`;
-            } else {
-              document.getElementById('userId').textContent = `メールアドレスがありません`;
-            }
+            document.getElementById('email').textContent = `${idToken.email}`;
           })
           .catch((err) => {
             // LIFF initialization failed
