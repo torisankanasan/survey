@@ -86,7 +86,7 @@
           })
           .then(() => {
             const idToken = liff.getDecodedIDToken();
-            if (idToken.email) {
+            if (idToken.email != null) {
               document.getElementById('email').textContent = `${idToken.email}`;
             } else {
               document.getElementById('userId').textContent = `メールアドレスがありません`;
