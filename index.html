@@ -87,7 +87,9 @@
           .then(() => {
             // LIFF initialization succeeded
             console.log('LIFF initialized');
-            getUserProfile();
+            // getUserProfile();
+            const idToken = liff.getDecodedIDToken();
+            document.getElementById('userId').textContent = `${idToken}`;
           })
           .catch((err) => {
             // LIFF initialization failed
