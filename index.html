@@ -94,7 +94,8 @@
       function initializeLiff(myLiffId) {
         liff
           .init({
-            liffId: myLiffId,
+            liffId: myLiffId, // Use own liffId
+            withLoginOnExternalBrowser: true, // Enable automatic login process
           })
           .then(() => {
             const idToken = liff.getDecodedIDToken();
@@ -131,12 +132,12 @@
           inqueryType: inqueryType,
           inquery: inquery
         };
-        params = "?accessToken=" + encodeURIComponent(accessToken) + "&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email) + "&inqueryType=" + encodeURIComponent(inqueryType) + "&inquery=" + encodeURIComponent(inquery);
-        fetch("https://default99ea0543b51849ccaaefc9edd8db02.01.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c53df230535044f8871a4a0ef362c899/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=93-qkv4lTY7CIz03FusSgsp-ntmIlCOJm6vDLvacx2w"+params, {
-          method: "GET",
+        fetch("https://default99ea0543b51849ccaaefc9edd8db02.01.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c53df230535044f8871a4a0ef362c899/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=93-qkv4lTY7CIz03FusSgsp-ntmIlCOJm6vDLvacx2w", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
-          }
+          },
+          body: JSON.stringify(postData),
         })
           .then((response) => {
             if (!response.ok) {
